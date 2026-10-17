@@ -16,7 +16,7 @@ const allowedOrigins = (process.env.CLIENT_ORIGIN || '').split(',').map((s) => s
 
 // S4 — Canonical name cleaner used by both create and join.
 function cleanName(value) {
-  return String(value || '').replace(/[^\w\s\-'.!?]/g, '').trim().slice(0, 18) || 'River pal';
+  return String(value || '').replace(/[^\p{L}\p{N}_\s\-'.!?]/gu, '').trim().slice(0, 18) || 'River pal';
 }
 
 const httpServer = createServer((request, response) => {
