@@ -739,7 +739,7 @@ export class RiverRenderer3D {
       if (hippo) {
         hippo.getWorldPosition(_worldPos);
         // Emit a small trickle of particles each frame while the burst is active
-        const seatAngle = -pose.angle + ([-Math.PI / 2, 0, Math.PI / 2, Math.PI][burst.playerId] ?? 0);
+        const seatAngle = pose.angle + ([-Math.PI / 2, 0, Math.PI / 2, Math.PI][burst.playerId] ?? 0);
         const outX = Math.cos(seatAngle);
         const outZ = Math.sin(seatAngle);
         for (let p = 0; p < 2; p += 1) {
