@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#e7f2d2" />
+    <meta name="description" content="A chaotic co-op raft steering game for one to four players." />
+    <title>Hippo Raft</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section id="loading-screen" class="loading-screen" aria-live="polite"><div class="loading-mark">H</div><p class="eyebrow">BUILDING THE RIVER</p><strong>Inflating the raft…</strong><div class="loading-track"><span></span></div></section>
+      <canvas id="river" aria-label="Hippo Raft river game"></canvas>
+      <header class="topbar">
+        <a class="wordmark" href="/" aria-label="Hippo Raft home"><span class="logo-mark">H</span><span>HIPPO <i>RAFT</i></span></a>
+        <div class="top-actions">
+          <span id="connection-label" class="connection-label">LOCAL RIVER</span>
+          <button id="mute-button" class="icon-button" title="Mute sound effects" aria-label="Mute sound effects">♫</button>
+          <button id="settings-button" class="icon-button" title="Settings" aria-label="Settings">⚙</button>
+        </div>
+      </header>
+
+      <section id="menu-screen" class="screen menu-screen">
+        <div class="menu-copy">
+          <p class="eyebrow">A CURRENT AFFAIR</p>
+          <h1>HIPPO<br /><span>RAFT</span></h1>
+          <p class="intro">Four hippos. One raft. Terrible propulsion.</p>
+          <div class="menu-actions">
+            <button class="primary-button" data-action="play">Choose a river <span>↗</span></button>
+            <button class="quiet-button" data-action="online">Play with a friend <span>+</span></button>
+          </div>
+          <p class="keyboard-note"><kbd>Q</kbd> <kbd>P</kbd> <kbd>Z</kbd> <kbd>M</kbd> to toot</p>
+        </div>
+        <div class="menu-stamp"><span>RIVER<br />RATED</span><strong>★ ★ ★</strong></div>
+        <div class="menu-footer"><span>EST. THIS MORNING</span><span>NO HIPPOS WERE CONSULTED</span></div>
+      </section>
+
+      <section id="select-screen" class="screen panel-screen" hidden>
+        <div class="panel-heading"><div><p class="eyebrow">GET YOUR CREW TOGETHER</p><h2>Choose your current</h2></div><button class="text-button" data-action="home">← Back</button></div>
+        <div class="mode-switch" role="group" aria-label="Game mode">
+          <button class="mode-option selected" data-mode="coop"><strong>Co-op</strong><span>One raft, one team</span></button>
+          <button class="mode-option" data-mode="blame"><strong>Blame mode</strong><span>Keep receipts</span></button>
+          <button class="mode-option" data-mode="solo"><strong>Solo practice</strong><span>Bots have no shame</span></button>
+        </div>
+        <div class="level-heading"><h3>River stages</h3><span>BEST RUNS SAVED HERE</span></div>
+        <div id="level-list" class="level-list"></div>
+        <div class="panel-footer"><span>Local crew: <kbd>Q</kbd> <kbd>P</kbd> <kbd>Z</kbd> <kbd>M</kbd></span><button id="launch-button" class="primary-button" data-action="start">Launch level 1 <span>↗</span></button></div>
+      </section>
+
+      <section id="online-screen" class="screen panel-screen online-screen" hidden>
+        <div class="panel-heading"><div><p class="eyebrow">SAME RIVER, DIFFERENT DEVICES</p><h2>Find your crew</h2></div><button class="text-button" data-action="home">← Back</button></div>
+        <div class="online-choice"><div><span class="choice-number">01</span><strong>Start a room</strong><p>Pick the river; send your crew the code.</p><button class="secondary-button" data-action="create-room">Create room ↗</button></div><div class="choice-divider"></div><div><span class="choice-number">02</span><strong>Join a room</strong><p>Four letters and you're aboard.</p><form id="join-form"><input id="room-code" inputmode="latin" maxlength="4" autocomplete="off" placeholder="ABCD" aria-label="Four-letter room code" /><button class="secondary-button" type="submit">Join ↗</button></form></div></div>
+        <p id="online-message" class="online-message" aria-live="polite"></p>
+      </section>
+
+      <section id="lobby-screen" class="screen panel-screen lobby-screen" hidden>
+        <div class="panel-heading"><div><p class="eyebrow">YOUR CREW IS ASSEMBLING</p><h2>Room <span id="lobby-code">----</span></h2></div><button class="text-button" data-action="home">Leave room</button></div>
+        <div class="invite-row"><span id="invite-link">Invite link loading</span><button class="secondary-button compact" data-action="copy-link">Copy link</button></div>
+        <div id="player-slots" class="player-slots"></div>
+        <div class="lobby-controls"><label>Mode <select id="lobby-mode"><option value="coop">Co-op</option><option value="blame">Blame mode</option></select></label><label>River <select id="lobby-level"></select></label><button id="lobby-start" class="primary-button" data-action="online-start">Start trip ↗</button></div>
+      </section>
+
+      <section id="hud" class="hud" hidden>
+        <div class="hud-left"><div class="heart-meter" id="heart-meter" aria-label="Raft health"></div><div class="stage-label"><span id="hud-stage">STAGE 01</span><strong id="hud-title">Lazy River</strong></div></div>
+        <div class="progress-track"><div id="progress-fill"></div></div>
+        <div class="hud-right"><strong id="timer">01:10</strong><button id="camera-button" class="icon-button" data-action="camera" title="Switch to party camera" aria-label="Switch camera">⌖</button><button class="icon-button pause-button" data-action="pause" aria-label="Pause">Ⅱ</button></div>
+        <div class="gas-meter" id="gas-meter"></div>
+        <div id="tutorial" class="tutorial"></div>
+        <div id="ping-label" class="ping-label" hidden>-- ms</div>
+      </section>
+
+      <section id="pause-screen" class="screen mini-screen" hidden><p class="eyebrow">CATCH YOUR BREATH</p><h2>Paused</h2><button class="primary-button" data-action="resume">Back to the river ↗</button><button class="text-button" data-action="quit">Leave trip</button></section>
+      <section id="results-screen" class="screen mini-screen results-screen" hidden><p id="results-eyebrow" class="eyebrow">RIVER REPORT</p><h2 id="results-title">Lovely float.</h2><p id="results-copy">You made it to the grass.</p><div id="result-stars" class="result-stars">★ ★ ★</div><div id="blame-board" class="blame-board"></div><button id="next-button" class="primary-button" data-action="next">Next river ↗</button><button id="retry-button" class="secondary-button" data-action="retry">Try again ↺</button><button class="text-button" data-action="home">Back to menu</button><div id="confetti-layer" class="confetti-layer"></div></section>
+
+      <div id="touch-controls" class="touch-controls" hidden></div>
+      <section id="settings-panel" class="settings-panel" hidden><div class="panel-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h2>Settings</h2></div><button class="icon-button" data-action="close-settings" aria-label="Close settings">×</button></div><label class="setting-row">Sound effects <input id="sound-toggle" type="checkbox" checked /></label><label class="setting-row">River ambience <input id="music-toggle" type="checkbox" checked /></label><label class="setting-row">Screen shake <input id="shake-toggle" type="checkbox" checked /></label><label class="setting-row">Colorblind-friendly colors <input id="colorblind-toggle" type="checkbox" /></label><label class="setting-row">Render quality <select id="quality-select"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option></select></label>
+        <details class="physics-tuning"><summary>Physics tuning</summary>
+          <label class="tuning-row">Mass <output>12</output><input data-physics-config="mass" type="range" min="6" max="26" step="1" /></label>
+          <label class="tuning-row">Raft radius <output>62</output><input data-physics-config="raftRadius" type="range" min="44" max="84" step="1" /></label>
+          <label class="tuning-row">Fart impulse <output>760</output><input data-physics-config="thrustImpulse" type="range" min="250" max="1400" step="10" /></label>
+          <label class="tuning-row">Blast duration <output>0.25 s</output><input data-physics-config="thrustDuration" type="range" min="0.1" max="0.5" step="0.01" /></label>
+          <label class="tuning-row">Cooldown <output>0.6 s</output><input data-physics-config="cooldown" type="range" min="0.25" max="1.2" step="0.05" /></label>
+          <label class="tuning-row">Linear drag <output>0.14</output><input data-physics-config="linearDamp" type="range" min="0.02" max="0.6" step="0.01" /></label>
+          <label class="tuning-row">Spin drag <output>1.05</output><input data-physics-config="angDamp" type="range" min="0.2" max="3" step="0.05" /></label>
+          <label class="tuning-row">Current strength <output>4</output><input data-physics-config="currentStrength" type="range" min="0.5" max="8" step="0.25" /></label>
+          <label class="tuning-row">Speed cap <output>230</output><input data-physics-config="maxSpeed" type="range" min="80" max="300" step="5" /></label>
+          <label class="tuning-row">Fart spin offset <output>20</output><input data-physics-config="tangentialOffset" type="range" min="4" max="40" step="1" /></label>
+        </details>
+      </section>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <div id="physics-debug" class="physics-debug" hidden></div>
+    </main>
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>

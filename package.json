@@ -1,0 +1,26 @@
+{
+  "name": "hippo-raft",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "build:client": "vite build --config vite.config.js",
+    "start:client": "vite preview --config vite.config.js",
+    "start:server": "node server/index.js",
+    "test": "node --test",
+    "lint": "eslint client server shared scripts test",
+    "format": "prettier --write \"client/**/*.{js,css,html}\" \"server/**/*.js\" \"shared/**/*.js\" \"scripts/**/*.js\" \"test/**/*.js\""
+  },
+  "dependencies": {
+    "@dimforge/rapier3d-compat": "^0.18.0",
+    "three": "^0.180.0",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "eslint": "^9.35.0",
+    "globals": "^16.4.0",
+    "prettier": "^3.6.2",
+    "vite": "^7.1.7"
+  }
+}

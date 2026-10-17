@@ -1,0 +1,1 @@
+window.HIPPO_RAFT_SERVER_URL = window.HIPPO_RAFT_SERVER_URL || '';

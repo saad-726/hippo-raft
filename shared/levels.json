@@ -1,0 +1,55 @@
+[
+  {
+    "id": 1, "name": "Lazy River", "subtitle": "Find your rhythm", "length": 3100,
+    "path": [{ "y": 0, "x": 500 }, { "y": 3100, "x": 500 }],
+    "riverWidth": 650, "curveAmplitude": 18, "curveFrequency": 1500, "current": 42, "timeLimit": 70,
+    "spikeBanks": [], "hazards": [{ "kind": "rock", "y": 860, "offset": -155, "radius": 40 }, { "kind": "log", "y": 1610, "offset": 150, "radius": 78 }, { "kind": "rock", "y": 2370, "offset": 15, "radius": 38 }], "goalOffset": 0, "goalRange": 190, "stars": [55, 68]
+  },
+  {
+    "id": 2, "name": "Bendy Creek", "subtitle": "Read the bend", "length": 3800,
+    "path": [{ "y": 0, "x": 500 }, { "y": 650, "x": 610 }, { "y": 1300, "x": 565 }, { "y": 2050, "x": 410 }, { "y": 2850, "x": 395 }, { "y": 3800, "x": 500 }],
+    "riverWidth": 610, "curveAmplitude": 115, "curveFrequency": 570, "current": 49, "timeLimit": 80,
+    "spikeBanks": [{ "side": "left", "start": 620, "end": 1600 }, { "side": "right", "start": 2300, "end": 3150 }],
+    "hazards": [{ "kind": "rock", "y": 1180, "offset": 145, "radius": 40 }, { "kind": "log", "y": 2630, "offset": -165, "radius": 84 }], "goalOffset": -110, "goalRange": 135, "stars": [64, 78]
+  },
+  {
+    "id": 3, "name": "Spike Alley", "subtitle": "Pick your gaps", "length": 4200,
+    "path": [{ "y": 0, "x": 500 }, { "y": 850, "x": 530 }, { "y": 1650, "x": 465 }, { "y": 2450, "x": 480 }, { "y": 3300, "x": 535 }, { "y": 4200, "x": 500 }],
+    "riverWidth": 510, "curveAmplitude": 52, "curveFrequency": 850, "current": 51, "timeLimit": 85,
+    "spikeBanks": [{ "side": "left", "start": 450, "end": 1250 }, { "side": "right", "start": 1350, "end": 2200 }, { "side": "left", "start": 2350, "end": 3150 }, { "side": "right", "start": 3250, "end": 3900 }],
+    "hazards": [{ "kind": "spike", "y": 960, "offset": 155, "radius": 44 }, { "kind": "spike", "y": 1900, "offset": -155, "radius": 44 }, { "kind": "rock", "y": 2820, "offset": 90, "radius": 38 }, { "kind": "spike", "y": 3520, "offset": 145, "radius": 44 }],
+    "goalOffset": 120, "goalRange": 118, "stars": [69, 83]
+  },
+  {
+    "id": 4, "name": "Rapids", "subtitle": "Hold on tight", "length": 4500,
+    "path": [{ "y": 0, "x": 500 }, { "y": 900, "x": 575 }, { "y": 1700, "x": 500 }, { "y": 2550, "x": 430 }, { "y": 3500, "x": 520 }, { "y": 4500, "x": 500 }],
+    "riverWidth": 580, "curveAmplitude": 82, "curveFrequency": 760, "current": 65, "timeLimit": 82,
+    "spikeBanks": [{ "side": "right", "start": 750, "end": 1760 }, { "side": "left", "start": 2780, "end": 3780 }],
+    "hazards": [{ "kind": "rapid", "y": 930, "offset": 0, "radius": 280 }, { "kind": "rock", "y": 1570, "offset": -175, "radius": 44 }, { "kind": "rapid", "y": 2310, "offset": 20, "radius": 300 }, { "kind": "log", "y": 3290, "offset": 140, "radius": 95 }, { "kind": "rapid", "y": 3880, "offset": -20, "radius": 300 }],
+    "goalOffset": -135, "goalRange": 125, "stars": [67, 80]
+  },
+  {
+    "id": 5, "name": "Hammer Time", "subtitle": "Mind the swing", "length": 4500,
+    "path": [{ "y": 0, "x": 500 }, { "y": 900, "x": 590 }, { "y": 1800, "x": 520 }, { "y": 2900, "x": 410 }, { "y": 3700, "x": 455 }, { "y": 4500, "x": 500 }],
+    "riverWidth": 590, "curveAmplitude": 100, "curveFrequency": 900, "current": 48, "timeLimit": 88,
+    "spikeBanks": [{ "side": "left", "start": 1900, "end": 2860 }],
+    "hazards": [{ "kind": "checkpoint", "y": 520, "offset": 0 }, { "kind": "rotating-bar", "y": 1050, "offset": 0, "length": 300, "thickness": 24, "spinSpeed": 1.1, "spiked": true }, { "kind": "swinging-hammer", "y": 1900, "offset": -130, "radius": 38, "swingAmplitude": 205, "swingSpeed": 1.3, "spiked": true }, { "kind": "checkpoint", "y": 2450, "offset": 0 }, { "kind": "rotating-bar", "y": 3120, "offset": 80, "length": 350, "thickness": 25, "spinSpeed": -1.35, "spiked": true }, { "kind": "swinging-hammer", "y": 3860, "offset": 130, "radius": 40, "swingAmplitude": 180, "swingSpeed": 1.6, "spiked": true }],
+    "goalOffset": 0, "goalRange": 140, "stars": [70, 84]
+  },
+  {
+    "id": 6, "name": "Whirlpool Pond", "subtitle": "Don't get swept away", "length": 4700,
+    "path": [{ "y": 0, "x": 500 }, { "y": 850, "x": 580 }, { "y": 1700, "x": 420 }, { "y": 2550, "x": 415 }, { "y": 3500, "x": 620 }, { "y": 4700, "x": 500 }],
+    "riverWidth": 670, "curveAmplitude": 155, "curveFrequency": 1040, "current": 45, "timeLimit": 90,
+    "spikeBanks": [{ "side": "left", "start": 1900, "end": 2860 }],
+    "hazards": [{ "kind": "checkpoint", "y": 600, "offset": 0 }, { "kind": "whirlpool", "y": 1200, "offset": -160, "radius": 120 }, { "kind": "whirlpool", "y": 2300, "offset": 170, "radius": 145 }, { "kind": "rock", "y": 3170, "offset": -90, "radius": 40 }, { "kind": "whirlpool", "y": 3820, "offset": -140, "radius": 120 }],
+    "goalOffset": 0, "goalRange": 140, "stars": [72, 86]
+  },
+  {
+    "id": 7, "name": "Chaos Finale", "subtitle": "All hands on deck", "length": 5200,
+    "path": [{ "y": 0, "x": 500 }, { "y": 800, "x": 625 }, { "y": 1650, "x": 440 }, { "y": 2500, "x": 385 }, { "y": 3350, "x": 595 }, { "y": 4300, "x": 405 }, { "y": 5200, "x": 500 }],
+    "riverWidth": 540, "curveAmplitude": 135, "curveFrequency": 620, "current": 61, "timeLimit": 74,
+    "spikeBanks": [{ "side": "left", "start": 350, "end": 1270 }, { "side": "right", "start": 1430, "end": 2240 }, { "side": "left", "start": 3180, "end": 4070 }],
+    "hazards": [{ "kind": "checkpoint", "y": 450, "offset": 0 }, { "kind": "moving-spike-wall", "y": 850, "offset": 0, "gapOffset": -130, "gapWidth": 180, "amplitude": 145, "speed": 1.1, "thickness": 32 }, { "kind": "mine", "y": 1240, "offset": -135, "radius": 38, "respawnAfter": 8 }, { "kind": "rotating-bar", "y": 1550, "offset": 50, "length": 320, "thickness": 24, "spinSpeed": 1.4, "spiked": true }, { "kind": "whirlpool", "y": 2260, "offset": 155, "radius": 120 }, { "kind": "gate", "y": 2850, "offset": 0, "gapOffset": 115, "gapWidth": 190, "thickness": 34 }, { "kind": "swinging-door", "y": 3160, "offset": 0, "gapOffset": -80, "gapWidth": 180, "thickness": 34, "period": 5, "openTime": 2, "phase": 0.8, "spiked": true }, { "kind": "rapid", "y": 3470, "offset": -25, "radius": 270 }, { "kind": "swinging-hammer", "y": 4080, "offset": -100, "radius": 42, "swingAmplitude": 200, "swingSpeed": 1.5, "spiked": true }, { "kind": "moving-spike-wall", "y": 4650, "offset": 0, "gapOffset": 140, "gapWidth": 175, "amplitude": 170, "speed": 1.35, "thickness": 34 }],
+    "goalOffset": 0, "goalRange": 120, "stars": [60, 72]
+  }
+]
