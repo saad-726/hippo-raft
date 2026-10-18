@@ -1,17 +1,19 @@
 import { SERVER_URL } from '../config.js';
 
-const MAX_RETRIES = 5;
+const MAX_RETRIES = 30;
 const RETRY_DELAY_MS = 2000;
 
 export class GameConnection {
   constructor(onMessage, onStatus) {
     this.onMessage = onMessage;
     this.onStatus = onStatus;
+    this.onReconnect = null;
     this.socket = null;
     this.pingStarted = 0;
     this.ping = null;
     this.pingTimer = null;
     this.retryCount = 0;
+    this.everConnected = false;
     this.intentionalClose = false;
     this.retryTimer = null;
   }
@@ -24,9 +26,13 @@ export class GameConnection {
       this.socket.addEventListener('open', () => {
         window.clearTimeout(timeout);
         this.retryCount = 0;
+        const isReconnect = this.everConnected;
+        this.everConnected = true;
         this.onStatus('connected');
+        window.clearInterval(this.pingTimer);
         this.pingTimer = window.setInterval(() => this.measurePing(), 2500);
         resolve();
+        if (isReconnect) this.onReconnect?.();
       }, { once: true });
       this.socket.addEventListener('error', () => {
         window.clearTimeout(timeout);
@@ -36,8 +42,8 @@ export class GameConnection {
       this.socket.addEventListener('close', () => {
         this.onStatus('offline');
         window.clearInterval(this.pingTimer);
-        // Auto-reconnect: retry up to MAX_RETRIES times unless closed intentionally.
-        if (!this.intentionalClose && this.retryCount < MAX_RETRIES) {
+        // Auto-reconnect only after a session that really started, and never after an intentional close.
+        if (this.everConnected && !this.intentionalClose && this.retryCount < MAX_RETRIES) {
           this.retryCount += 1;
           this.retryTimer = window.setTimeout(() => {
             this.connect().catch(() => {}); // errors are handled internally

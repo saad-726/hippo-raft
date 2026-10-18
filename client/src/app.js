@@ -126,6 +126,10 @@ function connectOnline(intent, code = '') {
   setConnectionStatus('waking');
   $('#online-message').textContent = 'Waking up the river server…';
   connection = new GameConnection(handleNetworkMessage, setConnectionStatus);
+    connection.onReconnect = () => {
+    if (!room?.code) return;
+    connection.send({ type: 'join', code: room.code, name: getPlayerName(), token: localStorage.getItem(`hippo-raft-token-${room.code}`) || '' });
+  };
   connection.connect().then(() => {
     $('#online-message').textContent = '';
     if (intent === 'create') connection.send({ type: 'create', name: getPlayerName(), mode: selectedMode });

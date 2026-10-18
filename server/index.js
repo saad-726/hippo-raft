@@ -137,7 +137,11 @@ webSocketServer.on('connection', (socket) => {
       if (!joinRoom) { send(socket, { type: 'error', message: 'No room by that code. Check the letters and try again.' }); return; }
       const name = cleanName(message.name);
       const seatIds = [0, 1, 2, 3];
-      let seat = seatIds.find((seatId) => joinRoom.players[seatId]?.token === message.token && !joinRoom.players[seatId]?.socket);
+      let seat = message.token ? seatIds.find((seatId) => joinRoom.players[seatId]?.token === message.token) : undefined;
+      if (seat !== undefined) {
+        const stale = joinRoom.players[seat].socket;
+        if (stale && stale !== socket) { stale.roomCode = null; stale.terminate(); }
+      }
       if (seat === undefined) seat = seatIds.find((seatId) => {
         const player = joinRoom.players[seatId];
         return !player || (!player.socket && Date.now() - player.disconnectedAt > 90000);
