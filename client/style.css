@@ -111,6 +111,7 @@ h2 { margin-bottom: 17px; font-family: Georgia, serif; font-size: 31px; font-wei
 .player-slot strong { font-size: 12px; }
 .player-slot span { color: var(--muted); font: 9px var(--mono); }
 .player-slot.empty { border-style: dashed; color: var(--muted); }
+.player-slot.you { border: 2px solid var(--slot-color); background: rgba(255,255,255,.75); }
 .lobby-controls { display: flex; align-items: end; gap: 12px; border-top: 1px solid var(--line); padding-top: 16px; }
 .lobby-controls label { display: grid; flex: 1; gap: 6px; color: var(--muted); font: 10px var(--mono); text-transform: uppercase; }
 .lobby-controls select { height: 40px; padding: 0 10px; border: 1px solid var(--line); border-radius: 3px; background: #fffdf1; color: var(--ink); font: 12px var(--sans); text-transform: none; }

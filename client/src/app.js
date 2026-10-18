@@ -185,6 +185,8 @@ function createPlayerSlot(player, index) {
   color.className = 'slot-color';
   const name = document.createElement('strong');
   name.textContent = player.name || (room?.started ? 'Bot aboard' : 'Open seat');
+  if (index === seat) name.textContent += ' (YOU)';
+  if (index === seat) element.classList.add('you');
   const status = document.createElement('span');
   status.textContent = `${PLAYERS[index].label} · ${player.connected ? 'CONNECTED' : player.name ? 'BOT READY' : 'BOT FILL'}`;
   element.append(color, name, status);
