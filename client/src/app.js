@@ -246,7 +246,7 @@ function beginOnlineGame(state, levelIndex) {
 function renderGasMeter() {
   $('#gas-meter').replaceChildren(...PLAYERS.map((player, index) => {
     const wrapper = document.createElement('div');
-    wrapper.className = 'gas-player';
+    wrapper.className = `gas-player${onlineGame && index === seat ? ' me' : ''}`;
     wrapper.innerHTML = `<span>${player.key.toUpperCase()}</span><div class="gas-track"><div class="gas-fill" style="width:${Math.round((1 - (gameState.cooldowns[index] || 0) / PHYSICS.fartCooldown) * 100)}%"></div></div>`;
     return wrapper;
   }));
@@ -265,6 +265,9 @@ function updateGameUI() {
     $('#tutorial').textContent = gameState.elapsed < 4 ? 'Press Q on the top side to push downstream.' : 'Work together. The grass is downstream.';
   } else $('#tutorial').textContent = '';
   if (connection) $('#ping-label').textContent = connection.ping === null ? 'PING --' : `PING ${Math.round(connection.ping)} ms`;
+  const youLabel = $('#you-label');
+  youLabel.hidden = !onlineGame;
+  if (onlineGame) youLabel.textContent = `YOU ARE ${PLAYERS[seat].label}`;
 }
 
 function checkGameEnd() {
