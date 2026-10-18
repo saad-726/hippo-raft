@@ -11,11 +11,9 @@ function material(color, roughness = 0.82, extra = {}) {
   return new THREE.MeshStandardMaterial({ color, roughness, ...extra });
 }
 
-function makeNameTag(name, color) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 256;
-  canvas.height = 80;
+function paintNameTag(canvas, name, color) {
   const context = canvas.getContext('2d');
+  context.clearRect(0, 0, canvas.width, canvas.height);
   context.fillStyle = 'rgba(24,55,53,.78)';
   context.beginPath();
   context.roundRect(12, 8, 232, 64, 20);
@@ -25,6 +23,13 @@ function makeNameTag(name, color) {
   context.textAlign = 'center';
   context.textBaseline = 'middle';
   context.fillText(name, 128, 40, 210);
+}
+
+function makeNameTag(name, color) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 80;
+  paintNameTag(canvas, name, color);
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
   const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false }));
@@ -296,6 +301,15 @@ export class RiverRenderer3D {
     this.camera.updateProjectionMatrix();
   }
 
+    setMySeat(mySeat) {
+    this.hippos.forEach((hippo, playerId) => {
+      const tag = hippo.children.find((child) => child.isSprite);
+      const isMe = playerId === mySeat;
+      paintNameTag(tag.material.map.image, isMe ? 'YOU' : PLAYERS[playerId].label, isMe ? '#ffe27a' : '#ffffff');
+      tag.material.map.needsUpdate = true;
+    });
+  }
+  
   resetCamera() {
     this.cameraPosition.set(0, 0, 0);
     this.cameraLook.set(0, 0, 0);

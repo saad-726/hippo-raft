@@ -213,6 +213,7 @@ function beginLocalGame(mode, levelIndex) {
   selectedMode = mode;
   selectedLevel = levelIndex;
   renderer.resetCamera();
+  renderer.setMySeat(null);
   gameState = createGameState(levels[levelIndex], mode);
   previousLocalState = { ...gameState, raft: { ...gameState.raft } };
   gameState.blame = [...campaignBlame];
@@ -232,6 +233,7 @@ function beginOnlineGame(state, levelIndex) {
   paused = false;
   selectedLevel = levelIndex;
   renderer.resetCamera();
+  renderer.setMySeat(seat);
   selectedMode = room?.mode || state.mode || 'coop';
   gameState = state;
   previousLocalState = { ...state, raft: { ...state.raft } };
