@@ -512,14 +512,15 @@ export class RiverRenderer3D {
     return group;
   }
 
-  makeHammer(hazard) {
+    makeHammer(hazard) {
     const group = new THREE.Group();
-    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.22, Math.max(1.5, hazard.swingAmplitude * WORLD_SCALE)), material('#9b7151'));
-    arm.position.z = Math.max(1.5, hazard.swingAmplitude * WORLD_SCALE) * 0.5;
+    // Unit-length arm: it runs from the head (z = 0) to z = 1 and is stretched to the right length every frame.
+    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.22, 1), material('#9b7151'));
+    arm.position.z = 0.5;
     arm.castShadow = true;
     group.add(arm);
+    // The head sits at the group's origin, which is the real hit position.
     const head = makeSpikedBall(hazard.radius * WORLD_SCALE, '#e86b66');
-    head.position.z = Math.max(1.5, hazard.swingAmplitude * WORLD_SCALE);
     head.position.y = -0.3;
     group.add(head);
     return group;
@@ -577,18 +578,19 @@ export class RiverRenderer3D {
       if (hazard.kind === 'rotating-bar') {
         group.position.set((position.x - 500) * WORLD_SCALE, 1.15, position.y * WORLD_SCALE);
         mesh.rotation.y = -((hazard.angle || 0) + time * hazard.spinSpeed);
-      } else if (hazard.kind === 'swinging-hammer') {
-        // Place the spiked head at the real physics hit position — one source of truth.
-        // The arm is drawn as a line from the left-bank anchor to the head.
+       } else if (hazard.kind === 'swinging-hammer') {
+        // The head sits exactly at the physics hit position; the arm stretches from the head back to the bank anchor.
         const headPos = toWorld(position.x, position.y);
-        headPos.y = 2.8;
+        headPos.y = 0;
         group.position.copy(headPos);
-        // Rotate the arm to point from anchor toward the head.
         const pivotX = (riverCenter(this.level, hazard.y) - this.level.riverWidth / 2 + 1 - 500) * WORLD_SCALE;
         const pivotZ = hazard.y * WORLD_SCALE;
         const dx = headPos.x - pivotX;
         const dz = headPos.z - pivotZ;
-        mesh.rotation.y = -Math.atan2(dx, dz);
+        mesh.rotation.y = Math.atan2(-dx, -dz);
+        const arm = mesh.children[0];
+        arm.scale.z = Math.max(0.1, Math.hypot(dx, dz));
+        arm.position.z = arm.scale.z / 2;
       } else if (['gate', 'moving-spike-wall', 'swinging-door'].includes(hazard.kind)) {
         group.position.set((riverCenter(this.level, hazard.y) - 500) * WORLD_SCALE, 0, hazard.y * WORLD_SCALE);
         const panels = getHazardPolygons(this.level, hazard, time);
