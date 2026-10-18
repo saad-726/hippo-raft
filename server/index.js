@@ -10,6 +10,22 @@ const levels = assertLevelSet(JSON.parse(await readFile(new URL('../shared/level
 const port = Number(process.env.PORT || 3001);
 const rooms = new Map();
 const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+// Step 3 limits: connections per IP, and wrong room-code guesses per IP.
+const MAX_SOCKETS_PER_IP = 12;
+const socketsPerIp = new Map();
+const failedJoins = new Map();
+const getIp = (request) => String(request.headers['x-forwarded-for'] || request.socket.remoteAddress || '').split(',')[0].trim();
+const tooManyFailedJoins = (ip) => {
+  const entry = failedJoins.get(ip);
+  return Boolean(entry && entry.resetAt > Date.now() && entry.count >= 10);
+};
+function recordFailedJoin(ip) {
+  const now = Date.now();
+  if (failedJoins.size > 1000) failedJoins.clear();
+  const entry = failedJoins.get(ip);
+  if (!entry || entry.resetAt <= now) failedJoins.set(ip, { count: 1, resetAt: now + 60000 });
+  else entry.count += 1;
+}
 
 // S5 — Origin check: allow all when CLIENT_ORIGIN is empty (local dev).
 const allowedOrigins = (process.env.CLIENT_ORIGIN || '').split(',').map((s) => s.trim()).filter(Boolean);
@@ -100,9 +116,18 @@ function handoverHost(room) {
   }
 }
 
-webSocketServer.on('connection', (socket) => {
+webSocketServer.on('connection', (socket, request) => {
   socket.on('error', () => {}); // absorb oversize-frame and reset errors; never crash
 
+  const ip = getIp(request);
+  socket.ip = ip;
+  const openSockets = socketsPerIp.get(ip) || 0;
+  if (openSockets >= MAX_SOCKETS_PER_IP) { socket.close(1013, 'Too many connections'); return; }
+  socketsPerIp.set(ip, openSockets + 1);
+  socket.on('close', () => {
+    const left = (socketsPerIp.get(ip) || 1) - 1;
+    if (left <= 0) socketsPerIp.delete(ip); else socketsPerIp.set(ip, left);
+  });
   // S2 — Per-socket message rate limit: 20 messages per second.
   socket.messageCount = 0;
   const rateLimitReset = setInterval(() => { socket.messageCount = 0; }, 1000);
@@ -131,10 +156,11 @@ webSocketServer.on('connection', (socket) => {
     }
 
     if (message.type === 'join') {
+      if (tooManyFailedJoins(socket.ip)) { send(socket, { type: 'error', message: 'Too many tries. Wait a minute and try again.' }); return; }
       // S3 — Prevent seat hogging: reject join if already in a room.
       if (socket.roomCode) { send(socket, { type: 'error', message: 'You are already in a room.' }); return; }
       const joinRoom = rooms.get(String(message.code || '').toUpperCase());
-      if (!joinRoom) { send(socket, { type: 'error', message: 'No room by that code. Check the letters and try again.' }); return; }
+      if (!joinRoom) { recordFailedJoin(socket.ip); send(socket, { type: 'error', message: 'No room by that code. Check the letters and try again.' }); return; }
       const name = cleanName(message.name);
       const seatIds = [0, 1, 2, 3];
       let seat = message.token ? seatIds.find((seatId) => joinRoom.players[seatId]?.token === message.token) : undefined;
