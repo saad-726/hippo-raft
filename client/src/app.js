@@ -116,6 +116,9 @@ function toast(message) {
 function getPlayerName() {
   return localStorage.getItem('hippo-raft-name') || 'River pal';
 }
+const nameInput = $('#player-name');
+nameInput.value = localStorage.getItem('hippo-raft-name') || '';
+nameInput.addEventListener('input', () => localStorage.setItem('hippo-raft-name', nameInput.value.trim()));
 
 function connectOnline(intent, code = '') {
   connection?.close();

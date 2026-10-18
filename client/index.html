@@ -50,6 +50,7 @@
 
       <section id="online-screen" class="screen panel-screen online-screen" hidden>
         <div class="panel-heading"><div><p class="eyebrow">SAME RIVER, DIFFERENT DEVICES</p><h2>Find your crew</h2></div><button class="text-button" data-action="home">← Back</button></div>
+        <label class="name-row">Your name <input id="player-name" maxlength="18" autocomplete="off" placeholder="River pal" /></label>   <!-- NEW -->
         <div class="online-choice"><div><span class="choice-number">01</span><strong>Start a room</strong><p>Pick the river; send your crew the code.</p><button class="secondary-button" data-action="create-room">Create room ↗</button></div><div class="choice-divider"></div><div><span class="choice-number">02</span><strong>Join a room</strong><p>Four letters and you're aboard.</p><form id="join-form"><input id="room-code" inputmode="latin" maxlength="4" autocomplete="off" placeholder="ABCD" aria-label="Four-letter room code" /><button class="secondary-button" type="submit">Join ↗</button></form></div></div>
         <p id="online-message" class="online-message" aria-live="polite"></p>
       </section>
