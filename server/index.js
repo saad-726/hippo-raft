@@ -212,7 +212,7 @@ setInterval(() => {
     tickAccumulator -= step;
     for (const room of rooms.values()) {
       if (!room.state || room.state.status !== 'playing') continue;
-      const bots = [0, 1, 2, 3].filter((seat) => !room.players[seat]?.socket);
+      const bots = []; // online rooms: empty seats stay idle, no bot players
       tickGame(room.state, levels[room.levelIndex], [...room.pendingInputs], step, bots);
       room.pendingInputs.clear();
       room.tick += 1;
