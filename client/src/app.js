@@ -328,7 +328,8 @@ function makeConfetti() {
   }));
 }
 
-function triggerFart(playerId) {
+function triggerFart(pressedId) {
+  const playerId = onlineGame ? seat : pressedId;
   if (paused || (!localGame && !onlineGame) || gameState.status !== 'playing') return;
   if (gameState.cooldowns[playerId] > 0) return;
   audio.fart();
